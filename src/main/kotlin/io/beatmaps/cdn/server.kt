@@ -33,12 +33,12 @@ fun main() {
     setupLogging()
     setupDB()
 
-    embeddedServer(Netty, port = port, host = host, module = Application::auth).start(wait = true)
+    embeddedServer(Netty, port = port, host = host, module = Application::cdn).start(wait = true)
 }
 
 data class ErrorResponse(val error: String)
 
-fun Application.auth() {
+fun Application.cdn() {
     install(ContentNegotiation) {
         jackson {
             enable(SerializationFeature.INDENT_OUTPUT)
