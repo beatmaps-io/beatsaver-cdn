@@ -28,6 +28,7 @@ import pl.jutupe.ktor_rabbitmq.RabbitMQ
 
 val port = System.getenv("LISTEN_PORT")?.toIntOrNull() ?: 3030
 val host = System.getenv("LISTEN_HOST") ?: "127.0.0.1"
+val cdnPrefix = System.getenv("CDN_PREFIX") ?: error("No CDN prefix set")
 
 fun main() {
     setupLogging()
@@ -64,8 +65,8 @@ fun Application.cdn() {
     if (rabbitHost.isNotEmpty()) {
         install(RabbitMQ) {
             setupAMQP {
-                queueDeclare("cdn.na", true, false, false, genericQueueConfig)
-                queueBind("cdn.na", "beatmaps", "cdn.#")
+                queueDeclare("cdn.$cdnPrefix", true, false, false, genericQueueConfig)
+                queueBind("cdn.$cdnPrefix", "beatmaps", "cdn.#")
             }
         }
     }

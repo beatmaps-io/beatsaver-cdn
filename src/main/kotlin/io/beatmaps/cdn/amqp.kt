@@ -15,7 +15,7 @@ import java.lang.Integer.toHexString
 
 fun Application.rabbitSub() {
     rabbitOptional {
-        consumeAck("cdn.na", CDNUpdate::class) { _, update ->
+        consumeAck("cdn.$cdnPrefix", CDNUpdate::class) { _, update ->
             transaction {
                 MapTable.upsert(MapTable.id) {
                     it[id] = update.mapId
