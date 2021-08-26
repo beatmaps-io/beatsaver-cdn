@@ -32,7 +32,7 @@ val cdnPrefix = System.getenv("CDN_PREFIX") ?: error("No CDN prefix set")
 
 fun main() {
     setupLogging()
-    setupDB()
+    setupDB("cdn")
 
     embeddedServer(Netty, port = port, host = host, module = Application::cdn).start(wait = true)
 }

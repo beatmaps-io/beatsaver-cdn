@@ -20,7 +20,7 @@ CREATE TABLE public.version
         ON DELETE CASCADE
 )
 
-ALTER TABLE public.map OWNER to "beatmaps-cdn";
-ALTER TABLE public.version OWNER to "beatmaps-cdn";
+ALTER TABLE public.map OWNER to "beatmaps";
+ALTER TABLE public.version OWNER to "beatmaps";
 
 CREATE UNIQUE INDEX published_ver ON public.version USING btree ("mapId") WHERE "published";

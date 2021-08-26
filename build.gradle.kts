@@ -1,5 +1,7 @@
 plugins {
     kotlin("jvm") version "1.5.30-RC"
+    id("org.flywaydb.flyway") version "7.12.0"
+    id("org.jlleitschuh.gradle.ktlint") version "10.1.0"
     application
 }
 
@@ -9,6 +11,9 @@ group = "io.beatmaps"
 version = "1.0-SNAPSHOT"
 
 kotlin {
+    jvmToolchain {
+        (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of(15))
+    }
     sourceSets.all {
         languageSettings.optIn("kotlin.io.path.ExperimentalPathApi")
         languageSettings.optIn("io.ktor.locations.KtorExperimentalLocationsAPI")
@@ -48,7 +53,13 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-java-time:$exposedVersion")
 
     implementation("io.beatmaps:BeatMaps-Common:1.0.+")
-    implementation("io.beatmaps:BeatMaps-CommonMP:1.0.+")
+}
+
+flyway {
+    url = "jdbc:postgresql://localhost:5432/cdn"
+    user = "beatmaps"
+    password = "insecure-password"
+    locations = arrayOf("filesystem:$projectDir/src/main/resources/db")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
