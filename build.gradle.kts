@@ -1,6 +1,7 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     kotlin("jvm") version "1.5.30-RC"
-    id("org.flywaydb.flyway") version "7.12.0"
     id("org.jlleitschuh.gradle.ktlint") version "10.1.0"
     application
 }
@@ -51,18 +52,12 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-java-time:$exposedVersion")
+    implementation("org.flywaydb:flyway-core:7.14.0")
 
     implementation("io.beatmaps:BeatMaps-Common:1.0.+")
 }
 
-flyway {
-    url = "jdbc:postgresql://localhost:5432/cdn"
-    user = "beatmaps"
-    password = "insecure-password"
-    locations = arrayOf("filesystem:$projectDir/src/main/resources/db")
-}
-
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "15"
 }
 

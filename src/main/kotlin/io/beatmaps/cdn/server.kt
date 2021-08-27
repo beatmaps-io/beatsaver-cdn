@@ -24,6 +24,7 @@ import io.ktor.response.respond
 import io.ktor.routing.routing
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
+import org.flywaydb.core.Flyway
 import pl.jutupe.ktor_rabbitmq.RabbitMQ
 
 val port = System.getenv("LISTEN_PORT")?.toIntOrNull() ?: 3030
@@ -32,7 +33,13 @@ val cdnPrefix = System.getenv("CDN_PREFIX") ?: error("No CDN prefix set")
 
 fun main() {
     setupLogging()
-    setupDB("cdn")
+    setupDB("cdn").let { ds ->
+        Flyway.configure()
+            .dataSource(ds)
+            .locations("db")
+            .load()
+            .migrate()
+    }
 
     embeddedServer(Netty, port = port, host = host, module = Application::cdn).start(wait = true)
 }

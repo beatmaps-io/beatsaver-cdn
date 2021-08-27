@@ -18,7 +18,6 @@ The db is fed with updates over AMQP and a message is placed on AMQP for every z
 - Run `docker-compose -d up` to start the local database  
 If you're already running postgres for the main app you should be able to just create a new schema called `cdn`
 - Open the project in IntelliJ IDEA
-- Run the `flywayMigrate` gradle task
 - Run the `run` gradle task
 
 #### Extra environment variables
