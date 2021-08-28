@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 
 plugins {
     kotlin("jvm") version "1.5.30-RC"
@@ -63,4 +64,10 @@ tasks.withType<KotlinCompile> {
 
 application {
     mainClass.set("io.beatmaps.cdn.ServerKt")
+}
+
+ktlint {
+    reporters {
+        reporter(ReporterType.CHECKSTYLE)
+    }
 }
