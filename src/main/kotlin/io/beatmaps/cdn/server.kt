@@ -6,6 +6,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import io.beatmaps.common.KotlinTimeModule
 import io.beatmaps.common.db.setupDB
 import io.beatmaps.common.genericQueueConfig
+import io.beatmaps.common.installMetrics
 import io.beatmaps.common.rabbitHost
 import io.beatmaps.common.setupAMQP
 import io.beatmaps.common.setupLogging
@@ -47,6 +48,8 @@ fun main() {
 data class ErrorResponse(val error: String)
 
 fun Application.cdn() {
+    installMetrics()
+
     install(ContentNegotiation) {
         jackson {
             enable(SerializationFeature.INDENT_OUTPUT)
