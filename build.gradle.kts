@@ -55,7 +55,7 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-java-time:$exposedVersion")
     implementation("org.flywaydb:flyway-core:7.14.0")
 
-    implementation("io.beatmaps:BeatMaps-Common:1.0.+")
+    implementation("io.beatmaps:BeatMaps-CommonMP:1.0.+")
 }
 
 tasks.withType<KotlinCompile> {
