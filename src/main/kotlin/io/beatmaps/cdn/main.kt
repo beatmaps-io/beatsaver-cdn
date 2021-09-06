@@ -5,11 +5,11 @@ import io.beatmaps.cdn.db.MapTable
 import io.beatmaps.cdn.db.VersionTable
 import io.beatmaps.common.DownloadInfo
 import io.beatmaps.common.DownloadType
+import io.beatmaps.common.downloadFilename
 import io.beatmaps.common.localAudioFolder
+import io.beatmaps.common.localAvatarFolder
 import io.beatmaps.common.localCoverFolder
 import io.beatmaps.common.localFolder
-import io.beatmaps.common.downloadFilename
-import io.beatmaps.common.localAvatarFolder
 import io.beatmaps.common.pub
 import io.beatmaps.common.returnFile
 import io.ktor.application.ApplicationCall
@@ -32,14 +32,22 @@ import org.jetbrains.exposed.sql.update
 import java.io.File
 import java.lang.Integer.toHexString
 
-@Location("/cdn") class CDN {
-    @Location("/{file}.zip") data class Zip(val file: String, val api: CDN)
-    @Location("/{file}.jpg") data class Cover(val file: String, val api: CDN)
-    @Location("/avatar/{user}.png") data class Avatar(val user: Long, val api: CDN)
-    @Location("/avatar/{user}.jpg") data class AvatarSimple(val user: Long, val api: CDN)
-    @Location("/beatsaver/{file}.zip") data class BeatSaver(val file: String, val api: CDN)
-    @Location("/{file}.mp3") data class Audio(val file: String, val api: CDN)
-    @Location("/beatsaver/{file}.mp3") data class BSAudio(val file: String, val api: CDN)
+@Location("/cdn")
+class CDN {
+    @Location("/{file}.zip")
+    data class Zip(val file: String, val api: CDN)
+    @Location("/{file}.jpg")
+    data class Cover(val file: String, val api: CDN)
+    @Location("/avatar/{user}.png")
+    data class Avatar(val user: Long, val api: CDN)
+    @Location("/avatar/{user}.jpg")
+    data class AvatarSimple(val user: Long, val api: CDN)
+    @Location("/beatsaver/{file}.zip")
+    data class BeatSaver(val file: String, val api: CDN)
+    @Location("/{file}.mp3")
+    data class Audio(val file: String, val api: CDN)
+    @Location("/beatsaver/{file}.mp3")
+    data class BSAudio(val file: String, val api: CDN)
 }
 
 fun Route.cdnRoute() {
