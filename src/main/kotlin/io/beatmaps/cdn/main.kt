@@ -5,9 +5,9 @@ import io.beatmaps.cdn.db.MapTable
 import io.beatmaps.cdn.db.VersionTable
 import io.beatmaps.common.DownloadInfo
 import io.beatmaps.common.DownloadType
-import io.beatmaps.common.beatsaver.localAudioFolder
-import io.beatmaps.common.beatsaver.localCoverFolder
-import io.beatmaps.common.beatsaver.localFolder
+import io.beatmaps.common.localAudioFolder
+import io.beatmaps.common.localCoverFolder
+import io.beatmaps.common.localFolder
 import io.beatmaps.common.downloadFilename
 import io.beatmaps.common.localAvatarFolder
 import io.beatmaps.common.pub
