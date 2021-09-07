@@ -16,6 +16,7 @@ import io.ktor.application.install
 import io.ktor.features.ContentNegotiation
 import io.ktor.features.NotFoundException
 import io.ktor.features.StatusPages
+import io.ktor.features.XForwardedHeaderSupport
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.content.resources
 import io.ktor.http.content.static
@@ -59,6 +60,8 @@ fun Application.cdn() {
             setSerializationInclusion(JsonInclude.Include.NON_NULL)
         }
     }
+
+    install(XForwardedHeaderSupport)
 
     install(Locations)
     install(StatusPages) {
