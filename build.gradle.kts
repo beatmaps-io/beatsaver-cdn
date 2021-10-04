@@ -14,7 +14,7 @@ version = "1.0-SNAPSHOT"
 
 kotlin {
     jvmToolchain {
-        (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of(15))
+        (this as JavaToolchainSpec).languageVersion.set(JavaLanguageVersion.of(16))
     }
     sourceSets.all {
         languageSettings.optIn("kotlin.io.path.ExperimentalPathApi")
@@ -59,7 +59,7 @@ dependencies {
 }
 
 tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "15"
+    kotlinOptions.jvmTarget = "16"
 }
 
 application {

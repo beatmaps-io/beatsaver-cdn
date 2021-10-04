@@ -1,4 +1,4 @@
-FROM openjdk:15.0.1-jdk-slim
+FROM openjdk:16-jdk-slim
 EXPOSE 8080
 
 RUN apt-get update
