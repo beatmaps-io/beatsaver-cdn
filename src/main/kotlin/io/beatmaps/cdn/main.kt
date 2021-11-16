@@ -10,6 +10,7 @@ import io.beatmaps.common.localAudioFolder
 import io.beatmaps.common.localAvatarFolder
 import io.beatmaps.common.localCoverFolder
 import io.beatmaps.common.localFolder
+import io.beatmaps.common.localPlaylistCoverFolder
 import io.beatmaps.common.pub
 import io.beatmaps.common.returnFile
 import io.ktor.application.ApplicationCall
@@ -48,6 +49,8 @@ class CDN {
     data class Audio(val file: String, val api: CDN)
     @Location("/beatsaver/{file}.mp3")
     data class BSAudio(val file: String, val api: CDN)
+    @Location("/playlist/{file}.jpg")
+    data class PlaylistCover(val file: String, val api: CDN)
 }
 
 fun Route.cdnRoute() {
@@ -164,6 +167,14 @@ fun Route.cdnRoute() {
         }
 
         returnFile(File(localCoverFolder(it.file), "${it.file}.jpg"))
+    }
+
+    get<CDN.PlaylistCover> {
+        if (it.file.isBlank()) {
+            throw NotFoundException()
+        }
+
+        returnFile(File(localPlaylistCoverFolder(it.file), "${it.file}.jpg"))
     }
 
     get<CDN.Avatar> {
