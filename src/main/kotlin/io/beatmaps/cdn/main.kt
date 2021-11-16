@@ -174,7 +174,7 @@ fun Route.cdnRoute() {
             throw NotFoundException()
         }
 
-        returnFile(File(localPlaylistCoverFolder(it.file), "${it.file}.jpg"))
+        returnFile(File(localPlaylistCoverFolder(), "${it.file}.jpg"))
     }
 
     get<CDN.Avatar> {
