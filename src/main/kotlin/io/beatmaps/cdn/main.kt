@@ -37,6 +37,10 @@ class CDN {
 }
 
 fun Route.cdnRoute() {
+    options<CDN.Cover> {
+        call.response.header("Access-Control-Allow-Origin", "*")
+    }
+
     get<CDN.Audio> {
         if (it.file.isBlank()) {
             throw NotFoundException()
@@ -69,6 +73,7 @@ fun Route.cdnRoute() {
             throw NotFoundException()
         }
 
+        call.response.header("Access-Control-Allow-Origin", "*")
         returnFile(File(localCoverFolder(it.file), "${it.file}.jpg"))
     }
 
