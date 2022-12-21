@@ -7,7 +7,7 @@ import io.beatmaps.common.consumeAck
 import io.beatmaps.common.db.upsert
 import io.beatmaps.common.downloadFilename
 import io.beatmaps.common.rabbitOptional
-import io.ktor.application.Application
+import io.ktor.server.application.Application
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update

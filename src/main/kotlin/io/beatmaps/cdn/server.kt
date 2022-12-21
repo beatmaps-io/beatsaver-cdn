@@ -1,33 +1,37 @@
 package io.beatmaps.cdn
 
-import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import io.beatmaps.common.KotlinTimeModule
+import io.beatmaps.common.StatusPagesCustom
 import io.beatmaps.common.db.setupDB
 import io.beatmaps.common.genericQueueConfig
 import io.beatmaps.common.installMetrics
+import io.beatmaps.common.jackson
+import io.beatmaps.common.json
 import io.beatmaps.common.rabbitHost
 import io.beatmaps.common.setupAMQP
 import io.beatmaps.common.setupLogging
-import io.ktor.application.Application
-import io.ktor.application.call
-import io.ktor.application.install
-import io.ktor.features.ContentNegotiation
-import io.ktor.features.NotFoundException
-import io.ktor.features.StatusPages
-import io.ktor.features.XForwardedHeaderSupport
+import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
-import io.ktor.http.content.resources
-import io.ktor.http.content.static
-import io.ktor.jackson.jackson
-import io.ktor.locations.Locations
-import io.ktor.response.respond
-import io.ktor.routing.routing
+import io.ktor.serialization.ContentConverter
+import io.ktor.serialization.jackson.JacksonConverter
+import io.ktor.serialization.kotlinx.KotlinxSerializationConverter
+import io.ktor.server.application.Application
+import io.ktor.server.application.call
+import io.ktor.server.application.install
 import io.ktor.server.engine.embeddedServer
+import io.ktor.server.http.content.resources
+import io.ktor.server.http.content.static
+import io.ktor.server.locations.Locations
 import io.ktor.server.netty.Netty
+import io.ktor.server.plugins.NotFoundException
+import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.server.plugins.forwardedheaders.XForwardedHeaders
+import io.ktor.server.response.respond
+import io.ktor.server.routing.routing
+import io.ktor.util.reflect.TypeInfo
+import io.ktor.utils.io.ByteReadChannel
 import org.flywaydb.core.Flyway
 import pl.jutupe.ktor_rabbitmq.RabbitMQ
+import java.nio.charset.Charset
 
 val port = System.getenv("LISTEN_PORT")?.toIntOrNull() ?: 3030
 val host = System.getenv("LISTEN_HOST") ?: "127.0.0.1"
@@ -52,19 +56,33 @@ fun Application.cdn() {
     installMetrics()
 
     install(ContentNegotiation) {
-        jackson {
-            enable(SerializationFeature.INDENT_OUTPUT)
-            registerModule(JavaTimeModule())
-            registerModule(KotlinTimeModule())
-            disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-            setSerializationInclusion(JsonInclude.Include.NON_NULL)
-        }
+        val kotlinx = KotlinxSerializationConverter(json)
+        val jsConv = JacksonConverter(jackson)
+
+        register(
+            ContentType.Application.Json,
+            object : ContentConverter {
+                override suspend fun deserialize(charset: Charset, typeInfo: TypeInfo, content: ByteReadChannel) =
+                    try {
+                        kotlinx.deserialize(charset, typeInfo, content)
+                    } catch (e: Exception) {
+                        null
+                    } ?: jsConv.deserialize(charset, typeInfo, content)
+
+                override suspend fun serialize(contentType: ContentType, charset: Charset, typeInfo: TypeInfo, value: Any) =
+                    try {
+                        kotlinx.serialize(contentType, charset, typeInfo, value)
+                    } catch (e: Exception) {
+                        null
+                    } ?: jsConv.serialize(contentType, charset, typeInfo, value)
+            }
+        )
     }
 
-    install(XForwardedHeaderSupport)
+    install(XForwardedHeaders)
 
     install(Locations)
-    install(StatusPages) {
+    install(StatusPagesCustom) {
         exception<NotFoundException> {
             call.respond(HttpStatusCode.NotFound, ErrorResponse("Not Found"))
         }
