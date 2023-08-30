@@ -18,8 +18,7 @@ import io.ktor.server.application.Application
 import io.ktor.server.application.call
 import io.ktor.server.application.install
 import io.ktor.server.engine.embeddedServer
-import io.ktor.server.http.content.resources
-import io.ktor.server.http.content.static
+import io.ktor.server.http.content.staticResources
 import io.ktor.server.locations.Locations
 import io.ktor.server.netty.Netty
 import io.ktor.server.plugins.NotFoundException
@@ -69,12 +68,12 @@ fun Application.cdn() {
                         null
                     } ?: jsConv.deserialize(charset, typeInfo, content)
 
-                override suspend fun serialize(contentType: ContentType, charset: Charset, typeInfo: TypeInfo, value: Any) =
+                override suspend fun serializeNullable(contentType: ContentType, charset: Charset, typeInfo: TypeInfo, value: Any?) =
                     try {
-                        kotlinx.serialize(contentType, charset, typeInfo, value)
+                        kotlinx.serializeNullable(contentType, charset, typeInfo, value)
                     } catch (e: Exception) {
                         null
-                    } ?: jsConv.serialize(contentType, charset, typeInfo, value)
+                    } ?: jsConv.serializeNullable(contentType, charset, typeInfo, value)
             }
         )
     }
@@ -107,8 +106,6 @@ fun Application.cdn() {
     routing {
         cdnRoute()
 
-        static("/static") {
-            resources()
-        }
+        staticResources("/static", "assets")
     }
 }
