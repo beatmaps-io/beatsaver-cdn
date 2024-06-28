@@ -16,7 +16,6 @@ import io.ktor.util.pipeline.PipelineContext
 import org.jetbrains.exposed.sql.JoinType
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.not
-import org.jetbrains.exposed.sql.select
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.io.File
 
@@ -62,7 +61,8 @@ fun Route.cdnRoute() {
             transaction {
                 MapTable
                     .join(VersionTable, JoinType.FULL, onColumn = MapTable.id, otherColumn = VersionTable.mapId, additionalConstraint = { VersionTable.published eq true })
-                    .select {
+                    .select(VersionTable.id)
+                    .where {
                         (MapTable.id eq it.file.toInt(16)) and not(MapTable.deleted)
                     }
                     .firstOrNull()?.let { map ->
