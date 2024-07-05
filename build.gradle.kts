@@ -2,7 +2,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
 
 plugins {
-    kotlin("jvm") version "1.8.22"
+    kotlin("jvm") version "1.9.20"
+    kotlin("plugin.serialization") version "1.9.20"
     id("org.jlleitschuh.gradle.ktlint") version "11.5.1"
     application
 }
@@ -41,16 +42,15 @@ dependencies {
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
     implementation("io.ktor:ktor-server-html-builder:$ktorVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:0.8.0")
-    implementation("io.ktor:ktor-client-apache:$ktorVersion")
     implementation("ch.qos.logback:logback-classic:1.5.6")
     implementation("io.ktor:ktor-server-forwarded-header:$ktorVersion")
     implementation("io.ktor:ktor-server-locations:$ktorVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
 
     // Database drivers
-    implementation("org.postgresql:postgresql:42.5.0")
+    implementation("org.postgresql:postgresql:42.7.3")
     implementation("pl.jutupe:ktor-rabbitmq:0.5.19")
-    implementation("com.rabbitmq:amqp-client:5.9.0")
+    implementation("com.rabbitmq:amqp-client:5.21.0")
 
     // Database library
     implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")

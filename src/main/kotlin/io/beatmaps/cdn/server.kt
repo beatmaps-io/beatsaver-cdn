@@ -22,6 +22,7 @@ import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.plugins.forwardedheaders.XForwardedHeaders
 import io.ktor.server.response.respond
 import io.ktor.server.routing.routing
+import kotlinx.serialization.Serializable
 import org.flywaydb.core.Flyway
 import pl.jutupe.ktor_rabbitmq.RabbitMQ
 
@@ -42,6 +43,7 @@ fun main() {
     embeddedServer(Netty, port = port, host = host, module = Application::cdn).start(wait = true)
 }
 
+@Serializable
 data class ErrorResponse(val error: String)
 
 fun Application.cdn() {
