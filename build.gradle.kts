@@ -34,9 +34,7 @@ dependencies {
         maven { url = uri("https://artifactory.kirkstall.top-cat.me") }
     }
 
-    implementation("io.ktor:ktor-serialization-jackson:$ktorVersion")
     implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.6.1")
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
 
     implementation("io.ktor:ktor-server-core:$ktorVersion")
@@ -44,14 +42,14 @@ dependencies {
     implementation("io.ktor:ktor-server-html-builder:$ktorVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:0.8.0")
     implementation("io.ktor:ktor-client-apache:$ktorVersion")
-    implementation("ch.qos.logback:logback-classic:1.2.3")
+    implementation("ch.qos.logback:logback-classic:1.5.6")
     implementation("io.ktor:ktor-server-forwarded-header:$ktorVersion")
     implementation("io.ktor:ktor-server-locations:$ktorVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
 
     // Database drivers
     implementation("org.postgresql:postgresql:42.5.0")
-    implementation("com.github.JUtupe:ktor-rabbitmq:0.4.0")
+    implementation("pl.jutupe:ktor-rabbitmq:0.5.19")
     implementation("com.rabbitmq:amqp-client:5.9.0")
 
     // Database library

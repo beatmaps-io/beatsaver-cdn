@@ -2,10 +2,7 @@ package io.beatmaps.cdn
 
 import io.beatmaps.cdn.db.MapTable
 import io.beatmaps.cdn.db.VersionTable
-import io.beatmaps.common.localAudioFolder
-import io.beatmaps.common.localAvatarFolder
-import io.beatmaps.common.localCoverFolder
-import io.beatmaps.common.localPlaylistCoverFolder
+import io.beatmaps.common.Folders
 import io.beatmaps.common.returnFile
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.application.call
@@ -85,7 +82,7 @@ fun Route.cdnRoute() {
         }
 
         call.response.header("Access-Control-Allow-Origin", "*")
-        returnFile(File(localCoverFolder(it.file), "${it.file}.jpg"))
+        returnFile(File(Folders.localCoverFolder(it.file), "${it.file}.jpg"))
     }
 
     get<CDN.PlaylistCover> {
@@ -93,7 +90,7 @@ fun Route.cdnRoute() {
             throw NotFoundException()
         }
 
-        returnFile(File(localPlaylistCoverFolder(), "${it.file}.jpg"))
+        returnFile(File(Folders.localPlaylistCoverFolder(), "${it.file}.jpg"))
     }
 
     get<CDN.PlaylistCoverSized> {
@@ -101,19 +98,19 @@ fun Route.cdnRoute() {
             throw NotFoundException()
         }
 
-        returnFile(File(localPlaylistCoverFolder(it.size), "${it.file}.jpg"))
+        returnFile(File(Folders.localPlaylistCoverFolder(it.size), "${it.file}.jpg"))
     }
 
     get<CDN.Avatar> {
-        returnFile(File(localAvatarFolder(), "${it.user}.png"))
+        returnFile(File(Folders.localAvatarFolder(), "${it.user}.png"))
     }
 
     get<CDN.AvatarSimple> {
-        returnFile(File(localAvatarFolder(), "${it.user}.jpg"))
+        returnFile(File(Folders.localAvatarFolder(), "${it.user}.jpg"))
     }
 }
 
 suspend fun PipelineContext<Unit, ApplicationCall>.getAudio(hash: String) =
     returnFile(
-        File(localAudioFolder(hash), "$hash.mp3")
+        File(Folders.localAudioFolder(hash), "$hash.mp3")
     )
